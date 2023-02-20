@@ -8,7 +8,9 @@
 <script>
   if ("serviceWorker" in navigator) {
     navigator.serviceWorker
-      .register("serviceworker.js")
+      .register("serviceworker.js", {
+        scope: "/",
+      })
       .then((registration) => {
         document.querySelector("output").innerHTML =
           "Service worker registered properly";
