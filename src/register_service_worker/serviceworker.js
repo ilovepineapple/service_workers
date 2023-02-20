@@ -1,3 +1,4 @@
+// version 2.1
 console.log("We are a service worker");
 
 try {

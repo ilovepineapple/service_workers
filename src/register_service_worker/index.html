@@ -5,11 +5,28 @@
 <h1>Service Worker Test</h1>
 <output></output>
 
+<button onclick="update()">Update Check</button>
+<button onclick="unregister()">Unregister</button>
+
 <script>
+  function update() {
+    navigator.serviceWorker.getRegistration().then((registration) => {
+      registration.update();
+    });
+    return;
+  }
+
+  function unregister() {
+    navigator.serviceWorker.getRegistration().then((registration) => {
+      registration.unregister();
+    });
+  }
+
   if ("serviceWorker" in navigator) {
     navigator.serviceWorker
       .register("serviceworker.js", {
         scope: "/",
+        // updateViaCache: "none",
       })
       .then((registration) => {
         const scope = registration.scope;
@@ -29,11 +46,15 @@
     navigator.serviceWorker
       .getRegistration()
       .then((registration) => {
-        registration.addEvenListener("updateFound", (event) => {
+        registration.addEventListener("updatefound", (event) => {
           const swInstalling = registration.installing;
-          swInstalling.addEvenListener("statechange", () => {
+          swInstalling.addEventListener("statechange", () => {
             if (swInstalling.state == "installed") {
-              console.log("Installed");
+              document.querySelector("output").innerHTML =
+                "A new Service Worker is installed and waiting";
+            } else {
+              document.querySelector("output").innerHTML =
+                "A new Service Worker is now controlling the page";
             }
           });
         });
