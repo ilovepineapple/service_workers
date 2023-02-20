@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+
+<title>First Service Worker</title>
+
+<h1>Service Worker Test</h1>
+<output></output>
+
+<script>
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker
+      .register("serviceworker.js")
+      .then((registration) => {
+        document.querySelector("output").innerHTML =
+          "Service worker registered properly";
+      })
+      .catch((error) => {
+        document.querySelector("output").innerHTML =
+          "Service worker NOT registered";
+      });
+  } else {
+    document.querySelector("output").innerHTML = "Service worker NOT available";
+  }
+</script>
