@@ -12,8 +12,10 @@
         scope: "/",
       })
       .then((registration) => {
-        document.querySelector("output").innerHTML =
-          "Service worker registered properly";
+        const scope = registration.scope;
+        document.querySelector(
+          "output"
+        ).innerHTML = `Service worker registered properly at ${scope}`;
       })
       .catch((error) => {
         document.querySelector("output").innerHTML =
@@ -21,5 +23,21 @@
       });
   } else {
     document.querySelector("output").innerHTML = "Service worker NOT available";
+  }
+
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker
+      .getRegistration()
+      .then((registration) => {
+        registration.addEvenListener("updateFound", (event) => {
+          const swInstalling = registration.installing;
+          swInstalling.addEvenListener("statechange", () => {
+            if (swInstalling.state == "installed") {
+              console.log("Installed");
+            }
+          });
+        });
+      })
+      .catch((error) => {});
   }
 </script>
